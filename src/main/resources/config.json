@@ -1,0 +1,14 @@
+{
+  "guild_id": "",
+
+  "roles": {
+    "channel_id": "",
+    "emotes": [
+      {
+        "name": "",
+        "reaction": "",
+        "role_id": ""
+      }
+    ]
+  }
+}
