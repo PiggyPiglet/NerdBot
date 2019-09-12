@@ -25,7 +25,7 @@ public final class ReactionListener extends ListenerAdapter {
 
     @Override
     public void onGenericGuildMessageReaction(@Nonnull GenericGuildMessageReactionEvent e) {
-        if (!config.getString("roles.channel_id").equals(e.getChannel().getId())) return;
+        if (e.getUser().isBot() || !config.getString("roles.channel_id").equals(e.getChannel().getId())) return;
 
         boolean take = true;
 
@@ -33,19 +33,19 @@ public final class ReactionListener extends ListenerAdapter {
             take = false;
         }
 
-        final List<FileConfiguration> sections = config.getConfigList("messages");
+        final List<FileConfiguration> sections = config.getConfigList("roles.emotes");
         final Guild guild = e.getGuild();
 
         for (FileConfiguration s : sections) {
             if (s.getString("reaction").equalsIgnoreCase(e.getReactionEmote().getName())) {
-                final Role role = guild.getRoleById(s.getString("role"));
+                final Role role = guild.getRoleById(s.getString("role_id"));
 
                 if (role == null) {
                     LOGGER.error("%s is not a valid role.", s.getString("role"));
                     return;
                 }
 
-                if (take) {
+                if (!take) {
                     guild.addRoleToMember(e.getMember(), role).queue();
                 } else {
                     guild.removeRoleFromMember(e.getMember(), role).queue();

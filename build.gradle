@@ -23,3 +23,5 @@ dependencies {
     compile 'me.piggypiglet:framework-logback:+'
     compile 'me.piggypiglet:framework-console:+'
 }
+
+compileJava.options.encoding = 'UTF-8'
